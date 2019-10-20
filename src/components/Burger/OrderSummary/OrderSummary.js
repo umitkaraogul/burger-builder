@@ -7,9 +7,6 @@ class OrderSummary extends Component {
 
     //This componet should be functional component.
 
-    componentWillUpdate() {
-        console.log("[OrderSummary] WillUpdate")
-    }
 
     render() {
         const ingredientSummary = Object.keys(this.props.ingredients)
