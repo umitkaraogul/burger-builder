@@ -9,7 +9,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions/actionTypes';
+import * as burgerBuilderActions from '../../store/actions/';
 
 
 
@@ -56,6 +56,7 @@ class BurgerBuilder extends Component {
     }
 
     render() {
+        console.log(this.props);
         const disabledInfo = {
             ...this.props.ingredients
         };
@@ -113,8 +114,8 @@ const mapStateProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onIngredientAdded: (type) => dispatch({ type: actionTypes.ADD_INGREDIENTS, ingredientName: type }),
-        onIngredientRemoved: (type) => dispatch({ type: actionTypes.REMOVE_INGREDIENTS, ingredientName: type }),
+        onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
+        onIngredientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName)),
     }
 }
 export default connect(mapStateProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
