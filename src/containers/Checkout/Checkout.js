@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Route } from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, Redirect } from 'react-router-dom';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
@@ -16,19 +16,29 @@ class Checkout extends Component {
     }
 
     render() {
+        let summary = <Redirect to="/" />;
+
+
+        if (this.props.ingredients) {
+
+            const purchaseRedirect = this.props.purchased ? <Redirect to="/" /> : null;
+
+            summary = (
+                <div>
+                    {purchaseRedirect}
+                    <CheckoutSummary
+                        ingredients={this.props.ingredients}
+                        checkoutCancelled={this.checkoutCancelledHandler}
+                        checkoutContinued={this.checkoutContinuedHandler} />
+                    <Route
+                        path={this.props.match.path + '/contact-data'}
+                        component={ContactData} />
+                </div>
+            )
+        }
         return (
             <div>
-                {this.props.ingredients &&
-                    <Fragment>
-                        <CheckoutSummary
-                            ingredients={this.props.ingredients}
-                            checkoutCancelled={this.checkoutCancelledHandler}
-                            checkoutContinued={this.checkoutContinuedHandler} />
-                        <Route
-                            path={this.props.match.path + '/contact-data'}
-                            component={ContactData} />
-                    </Fragment>
-                }
+                {summary}
             </div>
         );
     }
@@ -36,7 +46,8 @@ class Checkout extends Component {
 
 const mapStateProps = state => {
     return {
-        ingredients: state.ingredients
+        ingredients: state.burgerBuilder.ingredients,
+        purchased: state.order.purchased
     }
 }
 
